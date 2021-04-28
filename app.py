@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 from flask_restful import Api
 # pick up the JWT security library and the decorator (jwt_required)
@@ -9,8 +11,8 @@ from resources.item import Item, ItemList
 from resources.store import Store, StoreList
  
 app = Flask(__name__)
-#sqlalchemy can work with MSSQL / MySQL / Oracle etc, but in this case sqlite
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+#sqlalchemy can work with MSSQL / MySQL / Oracle etc, but in this case sqlite (if it can't find an environment variable)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL','sqlite:///data.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'jose' #idealy long and complicated
 api = Api(app)
